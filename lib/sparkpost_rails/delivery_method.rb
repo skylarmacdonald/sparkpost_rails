@@ -36,7 +36,12 @@ module SparkPostRails
 
       prepare_api_headers_from sparkpost_data
 
-      result = post_to_api
+      if sparkpost_data.has_key?(:api_domain)
+        api_url = "https://#{sparkpost_data[:api_domain]}/api/v1/transmissions"
+      else
+        api_url = "https://api.sparkpost.com/api/v1/transmissions"
+      end
+      result = post_to_api(api_url)
 
       process_result result
     end
@@ -376,13 +381,7 @@ module SparkPostRails
       end
     end
 
-    def post_to_api
-      if sparkpost_data.has_key?(:api_domain)
-        url = "https://#{sparkpost_data[:api_domain]}/api/v1/transmissions"
-      else
-        url = "https://api.sparkpost.com/api/v1/transmissions"
-      end
-
+    def post_to_api(url)
       uri = URI.parse(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
