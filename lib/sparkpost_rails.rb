@@ -19,6 +19,7 @@ module SparkPostRails
 
   class Configuration
     attr_accessor :api_key
+    attr_accessor :api_domain
     attr_accessor :sandbox
 
     attr_accessor :track_opens
